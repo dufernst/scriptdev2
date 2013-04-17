@@ -234,7 +234,7 @@ struct MANGOS_DLL_DECL boss_sartharionAI : public ScriptedAI
         m_uiFlameBreathTimer    = 20000;
         m_uiTailSweepTimer      = 20000;
         m_uiCleaveTimer         = 7000;
-        m_uiLavaStrikeTimer     = urand(20000, 30000);
+        m_uiLavaStrikeTimer     = 5000;
 
         m_bHasCalledTenebron    = false;
         m_bHasCalledShadron     = false;
@@ -910,7 +910,7 @@ struct MANGOS_DLL_DECL mob_shadronAI : public dummy_dragonAI
         DoScriptText(SAY_SHADRON_BREATH, m_creature);
     }
 
-    void UpdateDragonAI(const uint32 uiDiff)
+    void UpdateDragonAI(const uint32 uiDiff) override
     {
         if (m_uiAcolyteShadronTimer < uiDiff)
         {
@@ -983,7 +983,7 @@ struct MANGOS_DLL_DECL mob_vesperonAI : public dummy_dragonAI
         DoScriptText(SAY_VESPERON_BREATH, m_creature);
     }
 
-    void UpdateDragonAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (m_uiAcolyteVesperonTimer < uiDiff)
         {
@@ -998,66 +998,6 @@ struct MANGOS_DLL_DECL mob_vesperonAI : public dummy_dragonAI
 CreatureAI* GetAI_mob_vesperon(Creature* pCreature)
 {
     return new mob_vesperonAI(pCreature);
-}
-
-/*######
-## Mob Twilight Eggs
-######*/
-
-struct MANGOS_DLL_DECL mob_twilight_eggsAI : public ScriptedAI
-{
-    mob_twilight_eggsAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
-
-    void Reset() override
-    {
-    }
-
-    void AttackStart(Unit* /*pWho*/) override { }
-    void MoveInLineOfSight(Unit* /*pWho*/) override { }
-};
-
-CreatureAI* GetAI_mob_twilight_eggs(Creature* pCreature)
-{
-    return new mob_twilight_eggsAI(pCreature);
-}
-
-/*######
-## Mob Twilight Whelps
-######*/
-
-struct MANGOS_DLL_DECL mob_twilight_whelpAI : public ScriptedAI
-{
-    mob_twilight_whelpAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
-
-    uint32 m_uiFadeArmorTimer;
-
-    void Reset() override
-    {
-        m_uiFadeArmorTimer = 1000;
-    }
-
-    void UpdateAI(const uint32 uiDiff) override
-    {
-        // Return since we have no target
-        if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
-            return;
-
-        // twilight torment
-        if (m_uiFadeArmorTimer < uiDiff)
-        {
-            if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FADE_ARMOR) == CAST_OK)
-                m_uiFadeArmorTimer = urand(5000, 10000);
-        }
-        else
-            m_uiFadeArmorTimer -= uiDiff;
-
-        DoMeleeAttackIfReady();
-    }
-};
-
-CreatureAI* GetAI_mob_twilight_whelp(Creature* pCreature)
-{
-    return new mob_twilight_whelpAI(pCreature);
 }
 
 /*######
@@ -1141,14 +1081,79 @@ struct MANGOS_DLL_DECL npc_fire_cycloneAI : public ScriptedAI
 
     void JustSummoned(Creature* pSummoned) override
     {
-        if (pSummoned->GetEntry() == NPC_LAVA_BLAZE)
-            pSummoned->SetInCombatWithZone();
+        // Return since we have no target
+        if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
+            return;
+
+        // twilight torment
+        if (m_uiFadeArmorTimer < uiDiff)
+        {
+            if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_FADE_ARMOR) == CAST_OK)
+                m_uiFadeArmorTimer = urand(5000, 10000);
+        }
+        else
+            m_uiFadeArmorTimer -= uiDiff;
+
+        DoMeleeAttackIfReady();
     }
 };
 
 CreatureAI* GetAI_npc_fire_cyclone(Creature* pCreature)
 {
     return new npc_fire_cycloneAI(pCreature);
+}
+
+/*######
+## npc_flame_tsunami
+######*/
+
+struct MANGOS_DLL_DECL npc_flame_tsunamiAI : public ScriptedAI
+{
+    npc_flame_tsunamiAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
+
+    uint32 m_uiTsunamiTimer;
+
+    void Reset()
+    {
+        m_uiTsunamiTimer = 2000;
+
+        DoCastSpellIfCan(m_creature, SPELL_FLAME_TSUNAMI, CAST_TRIGGERED);
+        DoCastSpellIfCan(m_creature, SPELL_FLAME_TSUNAMI_DMG_AURA, CAST_TRIGGERED);
+    }
+
+    void AttackStart(Unit* /*pWho*/) override { }
+    void MoveInLineOfSight(Unit* /*pWho*/) override { }
+
+    void MovementInform(uint32 uiType, uint32 uiPointId) override
+    {
+        if (uiType != POINT_MOTION_TYPE || !uiPointId)
+            return;
+
+        m_creature->RemoveAllAurasOnEvade();
+    }
+
+    void UpdateAI(const uint32 uiDiff)
+    {
+        if (m_uiTsunamiTimer)
+        {
+            if (m_uiTsunamiTimer <= uiDiff)
+            {
+                // Note: currently the way in which spell 60241 works is unk, so for the moment we'll use simple movement
+                m_creature->SetWalk(false);
+                m_creature->GetMotionMaster()->MovePoint(1, m_creature->GetPositionX() < 3250.0f ? m_creature->GetPositionX() + 86.5f : m_creature->GetPositionX() - 86.5f,
+                    m_creature->GetPositionY(), m_creature->GetPositionZ());
+
+                m_uiTsunamiTimer = 0;
+            }
+            else
+                m_uiTsunamiTimer -= uiDiff;
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_flame_tsunami(Creature* pCreature)
+{
+    return new npc_flame_tsunamiAI(pCreature);
 }
 
 void AddSC_boss_sartharion()
@@ -1181,17 +1186,12 @@ void AddSC_boss_sartharion()
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
-    pNewScript->Name = "mob_twilight_whelp";
-    pNewScript->GetAI = &GetAI_mob_twilight_whelp;
+    pNewScript->Name = "npc_fire_cyclone";
+    pNewScript->GetAI = &GetAI_npc_fire_cyclone;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
     pNewScript->Name = "npc_flame_tsunami";
     pNewScript->GetAI = &GetAI_npc_flame_tsunami;
-    pNewScript->RegisterSelf();
-
-    pNewScript = new Script;
-    pNewScript->Name = "npc_fire_cyclone";
-    pNewScript->GetAI = &GetAI_npc_fire_cyclone;
     pNewScript->RegisterSelf();
 }
