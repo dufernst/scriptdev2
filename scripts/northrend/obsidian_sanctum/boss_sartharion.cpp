@@ -234,7 +234,7 @@ struct MANGOS_DLL_DECL boss_sartharionAI : public ScriptedAI
         m_uiFlameBreathTimer    = 20000;
         m_uiTailSweepTimer      = 20000;
         m_uiCleaveTimer         = 7000;
-        m_uiLavaStrikeTimer     = 5000;
+        m_uiLavaStrikeTimer     = urand(20000, 30000);
 
         m_bHasCalledTenebron    = false;
         m_bHasCalledShadron     = false;
@@ -910,7 +910,7 @@ struct MANGOS_DLL_DECL mob_shadronAI : public dummy_dragonAI
         DoScriptText(SAY_SHADRON_BREATH, m_creature);
     }
 
-    void UpdateDragonAI(const uint32 uiDiff) override
+    void UpdateDragonAI(const uint32 uiDiff)
     {
         if (m_uiAcolyteShadronTimer < uiDiff)
         {
@@ -983,7 +983,7 @@ struct MANGOS_DLL_DECL mob_vesperonAI : public dummy_dragonAI
         DoScriptText(SAY_VESPERON_BREATH, m_creature);
     }
 
-    void UpdateAI(const uint32 uiDiff) override
+    void UpdateDragonAI(const uint32 uiDiff)
     {
         if (m_uiAcolyteVesperonTimer < uiDiff)
         {
@@ -1113,7 +1113,7 @@ struct MANGOS_DLL_DECL npc_flame_tsunamiAI : public ScriptedAI
 
     uint32 m_uiTsunamiTimer;
 
-    void Reset()
+    void Reset() override
     {
         m_uiTsunamiTimer = 2000;
 
@@ -1132,7 +1132,7 @@ struct MANGOS_DLL_DECL npc_flame_tsunamiAI : public ScriptedAI
         m_creature->RemoveAllAurasOnEvade();
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (m_uiTsunamiTimer)
         {
@@ -1154,6 +1154,44 @@ struct MANGOS_DLL_DECL npc_flame_tsunamiAI : public ScriptedAI
 CreatureAI* GetAI_npc_flame_tsunami(Creature* pCreature)
 {
     return new npc_flame_tsunamiAI(pCreature);
+}
+
+/*######
+## npc_fire_cyclone
+######*/
+
+struct MANGOS_DLL_DECL npc_fire_cycloneAI : public ScriptedAI
+{
+    npc_fire_cycloneAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
+        Reset();
+    }
+
+    ScriptedInstance* m_pInstance;
+
+    void Reset()  override { }
+
+    void AttackStart(Unit* /*pWho*/) override { }
+    void MoveInLineOfSight(Unit* /*pWho*/) override { }
+
+    void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell) override
+    {
+        // Mark the achiev failed for the hit target
+        if (pSpell->Id == SPELL_LAVA_STRIKE_IMPACT && pTarget->GetTypeId() == TYPEID_PLAYER && m_pInstance)
+            m_pInstance->SetData(TYPE_VOLCANO_BLOW_FAILED, pTarget->GetGUIDLow());
+    }
+
+    void JustSummoned(Creature* pSummoned) override
+    {
+        if (pSummoned->GetEntry() == NPC_LAVA_BLAZE)
+            pSummoned->SetInCombatWithZone();
+    }
+};
+
+CreatureAI* GetAI_npc_fire_cyclone(Creature* pCreature)
+{
+    return new npc_fire_cycloneAI(pCreature);
 }
 
 void AddSC_boss_sartharion()
@@ -1193,5 +1231,10 @@ void AddSC_boss_sartharion()
     pNewScript = new Script;
     pNewScript->Name = "npc_flame_tsunami";
     pNewScript->GetAI = &GetAI_npc_flame_tsunami;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_fire_cyclone";
+    pNewScript->GetAI = &GetAI_npc_fire_cyclone;
     pNewScript->RegisterSelf();
 }
