@@ -1,5 +1,6 @@
 -- Ruby sanctum
 -- Halion
+/*
 UPDATE `creature_template` SET `ScriptName`='boss_halion_real', `AIName` ='' WHERE `entry`=39863;
 UPDATE `creature_template` SET `ScriptName`='boss_halion_twilight', `AIName` ='' WHERE `entry`=40142;
 UPDATE `creature_template` SET `ScriptName`='mob_halion_meteor', `AIName` ='' WHERE `entry` = 40029;
@@ -22,7 +23,7 @@ INSERT IGNORE INTO `creature_template` (`entry`, `difficulty_entry_1`, `difficul
 
 -- Zarithian
 UPDATE `creature` SET `position_x` = '3008.552734',`position_y` = '530.471680',`position_z` = '89.195290',`orientation` = '6.16' WHERE `id` = 39746;
-UPDATE `creature_template` SET `ScriptName`='mob_flamecaller_ruby', `AIName` ='' WHERE `entry`=39814;
+UPDATE `creature_template` SET `ScriptName`='' WHERE `entry`=39814;
 
 -- Saviana Ragefire
 DELETE FROM `spell_script_target` WHERE `entry` IN (74455);
@@ -35,3 +36,4 @@ UPDATE `creature_template` SET `ScriptName`='mob_xerestrasza', `AIName` ='' WHER
 -- Mobs
 UPDATE `creature_template` SET `ScriptName` = 'mob_living_ember' WHERE `entry` IN ('40683');
 UPDATE `creature_template` SET `ScriptName` = 'mob_living_inferno' WHERE `entry` IN ('40681');
+*/
