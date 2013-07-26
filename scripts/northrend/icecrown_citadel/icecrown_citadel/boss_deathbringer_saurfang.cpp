@@ -238,6 +238,13 @@ struct MANGOS_DLL_DECL npc_highlord_saurfang_iccAI : public base_icc_bossAI
         m_uiNextEventTimer = uiTime;
     }
 
+    
+    void JustSummoned(Creature* pSummoned)
+    {
+        pSummoned->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+        pSummoned->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+    }
+
     void UpdateAI(const uint32 uiDiff)
     {
         if (!m_bIsEventStarted || !m_pInstance)
@@ -254,6 +261,8 @@ struct MANGOS_DLL_DECL npc_highlord_saurfang_iccAI : public base_icc_bossAI
                 case 1:
                 {
                     DoSummonGuards();
+                    m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+                    m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     m_pInstance->DoUseDoorOrButton(GO_SAURFANG_DOOR, 0, false);
                     if (Creature *pSaurfang = GetSaurfang())
                         pSaurfang->GetMotionMaster()->MovePoint(0, fPositions[1][0], fPositions[1][1], fPositions[1][2]);

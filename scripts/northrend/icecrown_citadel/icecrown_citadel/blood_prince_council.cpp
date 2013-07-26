@@ -522,7 +522,7 @@ struct MANGOS_DLL_DECL boss_valanar_iccAI : public base_blood_prince_council_bos
         if (m_uiSphereTimer <= uiDiff)
         {
             if (DoCastSpellIfCan(m_creature, SPELL_KINETIC_BOMB) == CAST_OK)
-                m_uiSphereTimer = 20000;
+                m_uiSphereTimer = 30000;
         }
         else
             m_uiSphereTimer -= uiDiff;
@@ -810,6 +810,9 @@ struct MANGOS_DLL_DECL mob_dark_nucleusAI : public base_icc_bossAI
 
     void DamageTaken(Unit* pDealer, uint32& uiDamage)
     {
+        if (m_creature->getVictim() && pDealer->GetObjectGuid() == m_creature->getVictim()->GetObjectGuid())
+            return;
+
         m_creature->FixateTarget(pDealer);
         m_creature->InterruptNonMeleeSpells(true);
     }
@@ -833,7 +836,8 @@ struct MANGOS_DLL_DECL mob_dark_nucleusAI : public base_icc_bossAI
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
 
-        DoCastSpellIfCan(m_creature->getVictim(), SPELL_SHADOW_RESONANCE_BUFF);
+        if (!m_creature->GetCurrentSpell(CURRENT_CHANNELED_SPELL))
+            DoCastSpellIfCan(m_creature->getVictim(), SPELL_SHADOW_RESONANCE_BUFF);
     }
 };
 

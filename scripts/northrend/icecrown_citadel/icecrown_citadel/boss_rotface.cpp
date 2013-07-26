@@ -188,6 +188,7 @@ struct MANGOS_DLL_DECL boss_rotfaceAI : public base_icc_bossAI
             {
                 if (DoCastSpellIfCan(m_creature, SPELL_SLIME_SPRAY) == CAST_OK)
                 {
+                    DoCastSpellIfCan(m_creature, 70881, CAST_TRIGGERED);
                     DoScriptText(SAY_SLIME_SPRAY, m_creature);
                     m_uiSlimeSprayTimer = urand(17000, 23000);
                 }

@@ -907,6 +907,7 @@ struct MANGOS_DLL_DECL mob_mutated_amobinationAI : public ScriptedAI
 {
     mob_mutated_amobinationAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
+        pCreature->SetSpoofSamePlayerFaction(true);
         SetCombatMovement(false);
         //DoCastSpellIfCan(m_creature, SPELL_MUTATED_AURA, CAST_TRIGGERED);
         DoCastSpellIfCan(m_creature, SPELL_ABOMINATION_POWER_DRAIN, CAST_TRIGGERED);

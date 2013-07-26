@@ -350,9 +350,9 @@ struct MANGOS_DLL_DECL mob_coldflameAI : public ScriptedAI
 /*####
 # Bone Spike
 ####*/
-struct MANGOS_DLL_DECL mob_bone_spikeAI : public ScriptedAI
+struct MANGOS_DLL_DECL mob_bone_spikeAI : public Scripted_NoMovementAI
 {
-    mob_bone_spikeAI(Creature* pCreature) : ScriptedAI(pCreature)
+    mob_bone_spikeAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature)
     {
         m_pInstance = ((instance_icecrown_citadel*)pCreature->GetInstanceData());
         m_victimGuid.Clear();
@@ -390,6 +390,7 @@ struct MANGOS_DLL_DECL mob_bone_spikeAI : public ScriptedAI
         if (!m_bEmerged)
         {
             m_creature->HandleEmote(EMOTE_ONESHOT_EMERGE);
+            DoCastSpellIfCan(m_creature, SPELL_IMPALED, CAST_TRIGGERED);
             m_bEmerged = true;
         }
     }

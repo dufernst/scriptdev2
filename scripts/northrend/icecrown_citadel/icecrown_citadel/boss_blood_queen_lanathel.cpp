@@ -346,8 +346,6 @@ struct MANGOS_DLL_DECL boss_blood_queen_lanathelAI : public base_icc_bossAI
                     m_uiBloodMirrorTimer -= uiDiff;
 
                 // Delirious Slash
-                if (m_bIsHeroic)
-                {
                     if (m_uiDeliriousSlashTimer <= uiDiff)
                     {
                         /**
@@ -368,7 +366,6 @@ struct MANGOS_DLL_DECL boss_blood_queen_lanathelAI : public base_icc_bossAI
                     }
                     else
                         m_uiDeliriousSlashTimer -= uiDiff;
-                }
 
                 // Vampiric Bite
                 if (!m_bHasBitten)

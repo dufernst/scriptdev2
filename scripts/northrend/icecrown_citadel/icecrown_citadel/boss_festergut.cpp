@@ -107,6 +107,10 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
         Reset();
     }
 
+    bool m_bInitializeDone;
+    
+    uint32 m_uiInitializeTimer;
+    uint32 m_uiInitGaseousTimer;
     uint32 m_uiBerserkTimer;
     uint32 m_uiGastricBloatTimer;
     uint32 m_uiInhaleBlightTimer;
@@ -116,21 +120,27 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
 
     void Reset()
     {
+        m_bInitializeDone = false;
+
+        m_uiInitializeTimer   = 6000;
+        m_uiInitGaseousTimer  = 7500;
         m_uiBerserkTimer      = 5 * MINUTE * IN_MILLISECONDS;
-        m_uiGastricBloatTimer = 10000;
+        m_uiGastricBloatTimer = 12000;
         m_uiInhaleBlightTimer = 30000;
         m_uiGasSporeTimer     = 20000;
         m_uiVileGasTimer      = 10000;
         m_uiMalleableGooTimer = urand(15000, 20000);
+
+        m_creature->RemoveAllAuras();
+        // Remove the visual effect in the room on reset
+        if (Creature* pStalker = GetClosestCreatureWithEntry(m_creature, NPC_ORANGE_GAS_STALKER, 50.0f))
+            pStalker->RemoveAllAuras();
     }
 
     void Aggro(Unit* pWho)
     {
         // not working as intended currently
         // DoCastSpellIfCan(m_creature, SPELL_GASTRIC_BLOAT, CAST_TRIGGERED);
-
-        DoCastSpellIfCan(m_creature, SPELL_GASEOUS_BLIGHT_1, CAST_TRIGGERED);
-        DoCastSpellIfCan(m_creature, SPELL_GASEUS_BLIGHT_DUMMY, CAST_TRIGGERED);
 
         DoScriptText(SAY_AGGRO, m_creature);
 
@@ -162,6 +172,8 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
         }
 
         DoCastSpellIfCan(m_creature, SPELL_REMOVE_INOCULENT, CAST_TRIGGERED);
+        if (Creature* pStalker = GetClosestCreatureWithEntry(m_creature, NPC_ORANGE_GAS_STALKER, 50.0f))
+            pStalker->RemoveAllAuras();
     }
 
     void JustDied(Unit* pKiller)
@@ -176,12 +188,34 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
 
         DoScriptText(SAY_DEATH, m_creature);
         DoCastSpellIfCan(m_creature, SPELL_REMOVE_INOCULENT, CAST_TRIGGERED);
+        if (Creature* pStalker = GetClosestCreatureWithEntry(m_creature, NPC_ORANGE_GAS_STALKER, 50.0f))
+            pStalker->RemoveAllAuras();
     }
 
     void UpdateAI(const uint32 uiDiff)
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
+
+        // Initialize
+        if (!m_bInitializeDone)
+        {
+            if (m_uiInitializeTimer <= uiDiff)
+            {
+                DoCastSpellIfCan(m_creature, SPELL_GASEUS_BLIGHT_DUMMY, CAST_TRIGGERED);
+                m_uiInitializeTimer = 5000;
+            }
+            else
+                m_uiInitializeTimer -= uiDiff;
+
+            if (m_uiInitGaseousTimer <= uiDiff)
+            {
+                DoCastSpellIfCan(m_creature, SPELL_GASEOUS_BLIGHT_1, CAST_TRIGGERED);
+                m_bInitializeDone = true;
+            }
+            else
+                m_uiInitGaseousTimer -= uiDiff;
+        }
 
         // Berserk
         if (m_uiBerserkTimer <= uiDiff)
@@ -199,7 +233,7 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
         if (m_uiGastricBloatTimer <= uiDiff)
         {
             if (DoCastSpellIfCan(m_creature->getVictim(), SPELL_GASTRIC_BLOAT_TRIG) == CAST_OK)
-                m_uiGastricBloatTimer = 10000;
+                m_uiGastricBloatTimer = 12000;
         }
         else
             m_uiGastricBloatTimer -= uiDiff;
@@ -213,6 +247,10 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
                 holder = m_creature->GetSpellAuraHolder(SPELL_INHALED_BLIGHT_25);
             if (holder)
             {
+                if (holder->GetStackAmount() == 2)
+                    if (Creature* pStalker = GetClosestCreatureWithEntry(m_creature, NPC_ORANGE_GAS_STALKER, 50.0f))
+                        pStalker->RemoveAllAuras();
+
                 if (holder->GetStackAmount() >= 3)
                 {
                     // can't inhale anymore...
@@ -220,7 +258,7 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
                     {
                         DoScriptText(SAY_PUNGUENT_BLIGHT_EMOTE, m_creature);
                         DoScriptText(SAY_PUNGUENT_BLIGHT, m_creature);
-                        m_uiInhaleBlightTimer = 35000;
+                        m_uiInhaleBlightTimer = 34000;
                     }
 
                     return;
@@ -234,7 +272,7 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
                     if (Creature* pProfessor = m_pInstance->GetSingleCreatureFromStorage(NPC_PROFESSOR_PUTRICIDE))
                         DoScriptText(SAY_BLIGHT, pProfessor);
                 }
-                m_uiInhaleBlightTimer = 30000;
+                m_uiInhaleBlightTimer = 34000;
             }
         }
         else
@@ -249,8 +287,8 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
                 m_uiGasSporeTimer = 40000;
                 
                 // make sure Vile Gas is not cast when players are gathered near Gas Spore
-                if (m_uiVileGasTimer < 12000)
-                    m_uiVileGasTimer = 12000;
+                if (m_uiVileGasTimer < 17000)
+                    m_uiVileGasTimer = 17000;
             }
         }
         else
@@ -264,8 +302,10 @@ struct MANGOS_DLL_DECL boss_festergutAI : public base_icc_bossAI
 
             if (Unit* pTarget = SelectRandomRangedTarget(m_creature))
             {
-                pTarget->CastSpell(pTarget, SPELL_VILE_GAS_SUMMON_TRIG, true);
-                DoCastSpellIfCan(m_creature, SPELL_VILE_GAS, CAST_TRIGGERED);
+                DoCastSpellIfCan(pTarget, SPELL_VILE_GAS_TRIGGERED, true);
+                // Doesn't work, this line above is a slight workaround
+                // pTarget->CastSpell(pTarget, SPELL_VILE_GAS_SUMMON_TRIG, true);
+                // DoCastSpellIfCan(m_creature, SPELL_VILE_GAS, CAST_TRIGGERED);
                 m_uiVileGasTimer = 30000;
             }
         }
