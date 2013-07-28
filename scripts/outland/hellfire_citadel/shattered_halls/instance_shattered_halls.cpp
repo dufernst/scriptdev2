@@ -217,7 +217,7 @@ void instance_shattered_halls::OnCreatureEvade(Creature* pCreature)
         SetData(TYPE_EXECUTION, IN_PROGRESS);
 }
 
-bool instance_shattered_halls::CheckConditionCriteriaMeet(Player const* pPlayer, uint32 uiInstanceConditionId, WorldObject const* pConditionSource, uint32 conditionSourceType) const
+bool instance_shattered_halls::CheckConditionCriteriaMeet(Player const* pPlayer, uint32 uiInstanceConditionId, WorldObject const* pConditionSource, ConditionSource conditionSourceType) const
 {
     switch (uiInstanceConditionId)
     {
@@ -225,7 +225,7 @@ bool instance_shattered_halls::CheckConditionCriteriaMeet(Player const* pPlayer,
         case INSTANCE_CONDITION_ID_HARD_MODE:               // One soldier alive
         case INSTANCE_CONDITION_ID_HARD_MODE_2:             // Two soldier alive
         case INSTANCE_CONDITION_ID_HARD_MODE_3:             // Three soldier alive
-            return uiInstanceConditionId == INSTANCE_CONDITION_ID_HARD_MODE_3 - m_uiExecutionStage;
+            return uiInstanceConditionId == uint32(INSTANCE_CONDITION_ID_HARD_MODE_3 - m_uiExecutionStage);
     }
 
     script_error_log("instance_shattered_halls::CheckConditionCriteriaMeet called with unsupported Id %u. Called with param plr %s, src %s, condition source type %u",
