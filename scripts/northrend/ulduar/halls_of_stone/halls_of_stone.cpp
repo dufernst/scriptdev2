@@ -551,6 +551,7 @@ struct MANGOS_DLL_DECL npc_brann_hosAI : public npc_escortAI
                     }
 
                     // Should cast spell 59046 (doesn't exist in client dbc), criterias are ACHIEVEMENT_CRITERIA_TYPE_BE_SPELL_TARGET
+                    DoCastSpellIfCan(m_creature, SPELL_ACHIEVEMENT_CHECK, CAST_TRIGGERED);
 
                     Player* pPlayer = GetPlayerForEscort();
                     if (pPlayer)
