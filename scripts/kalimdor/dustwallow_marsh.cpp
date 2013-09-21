@@ -17,7 +17,7 @@
 /* ScriptData
 SDName: Dustwallow_Marsh
 SD%Complete: 95
-SDComment: Quest support: 1173, 1273, 1324, 11209, 11180.
+SDComment: Quest support: 1173, 1222, 1270, 1273, 1324, 11209, 11180.
 SDCategory: Dustwallow Marsh
 EndScriptData */
 
@@ -29,6 +29,8 @@ npc_ogron
 npc_private_hendel
 npc_cassa_crimsonwing
 Lady Jaina Proudmoore
+npc_stinky_ignatz
+at_nats_landing
 EndContentData */
 
 #include "precompiled.h"
@@ -65,13 +67,13 @@ struct MANGOS_DLL_DECL mobs_risen_husk_spiritAI : public ScriptedAI
         m_pCreditPlayer = NULL;
     }
 
-    void JustSummoned(Creature* pSummoned)
+    void JustSummoned(Creature* pSummoned) override
     {
         if (m_pCreditPlayer)
             m_pCreditPlayer->KilledMonsterCredit(pSummoned->GetEntry(), pSummoned->GetObjectGuid());
     }
 
-    void DamageTaken(Unit* pDoneBy, uint32& uiDamage)
+    void DamageTaken(Unit* pDoneBy, uint32& uiDamage) override
     {
         if (uiDamage < m_creature->GetHealth())
             return;
@@ -86,7 +88,7 @@ struct MANGOS_DLL_DECL mobs_risen_husk_spiritAI : public ScriptedAI
         }
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
@@ -147,7 +149,7 @@ struct MANGOS_DLL_DECL npc_restless_apparitionAI : public ScriptedAI
         m_uiTalk_Timer = 1000;
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_uiTalk_Timer)
             return;
@@ -243,7 +245,7 @@ struct MANGOS_DLL_DECL npc_morokkAI : public npc_escortAI
 
     void Reset() {}
 
-    void WaypointReached(uint32 uiPointId)
+    void WaypointReached(uint32 uiPointId) override
     {
         switch (uiPointId)
         {
@@ -262,7 +264,7 @@ struct MANGOS_DLL_DECL npc_morokkAI : public npc_escortAI
         }
     }
 
-    void AttackedBy(Unit* pAttacker)
+    void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
             return;
@@ -273,7 +275,7 @@ struct MANGOS_DLL_DECL npc_morokkAI : public npc_escortAI
         AttackStart(pAttacker);
     }
 
-    void DamageTaken(Unit* pDoneBy, uint32& uiDamage)
+    void DamageTaken(Unit* /*pDoneBy*/, uint32& uiDamage) override
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
         {
@@ -292,7 +294,7 @@ struct MANGOS_DLL_DECL npc_morokkAI : public npc_escortAI
         }
     }
 
-    void UpdateEscortAI(const uint32 uiDiff)
+    void UpdateEscortAI(const uint32 /*uiDiff*/) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
         {
@@ -413,7 +415,7 @@ struct MANGOS_DLL_DECL npc_ogronAI : public npc_escortAI
         }
     }
 
-    void MoveInLineOfSight(Unit* pWho)
+    void MoveInLineOfSight(Unit* pWho) override
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING) && pWho->GetEntry() == NPC_REETHE && lCreatureList.empty())
             lCreatureList.push_back((Creature*)pWho);
@@ -435,7 +437,7 @@ struct MANGOS_DLL_DECL npc_ogronAI : public npc_escortAI
         return NULL;
     }
 
-    void WaypointReached(uint32 uiPointId)
+    void WaypointReached(uint32 uiPointId) override
     {
         switch (uiPointId)
         {
@@ -452,7 +454,7 @@ struct MANGOS_DLL_DECL npc_ogronAI : public npc_escortAI
         }
     }
 
-    void JustSummoned(Creature* pSummoned)
+    void JustSummoned(Creature* pSummoned) override
     {
         lCreatureList.push_back(pSummoned);
 
@@ -489,7 +491,7 @@ struct MANGOS_DLL_DECL npc_ogronAI : public npc_escortAI
         }
     }
 
-    void UpdateEscortAI(const uint32 uiDiff)
+    void UpdateEscortAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
         {
@@ -529,10 +531,10 @@ struct MANGOS_DLL_DECL npc_ogronAI : public npc_escortAI
                                     if (Creature* pReethe = GetCreature(NPC_REETHE))
                                         DoScriptText(SAY_OGR_RET_HEAR, pReethe);
 
-                                    m_creature->SummonCreature(NPC_CALDWELL, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 300000);
-                                    m_creature->SummonCreature(NPC_HALLAN, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 300000);
-                                    m_creature->SummonCreature(NPC_SKIRMISHER, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 300000);
-                                    m_creature->SummonCreature(NPC_SKIRMISHER, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 300000);
+                                    m_creature->SummonCreature(NPC_CALDWELL, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 300000);
+                                    m_creature->SummonCreature(NPC_HALLAN, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 300000);
+                                    m_creature->SummonCreature(NPC_SKIRMISHER, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 300000);
+                                    m_creature->SummonCreature(NPC_SKIRMISHER, m_afSpawn[0], m_afSpawn[1], m_afSpawn[2], 0.0f, TEMPSUMMON_TIMED_OOC_OR_DEAD_DESPAWN, 300000);
 
                                     m_uiPhase = PHASE_GUESTS;
                                     break;
@@ -663,9 +665,9 @@ struct MANGOS_DLL_DECL npc_private_hendelAI : public ScriptedAI
 {
     npc_private_hendelAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
-    void Reset() override {}
+    void Reset() {}
 
-    void AttackedBy(Unit* pAttacker)
+    void AttackedBy(Unit* pAttacker) override
     {
         if (m_creature->getVictim())
             return;
@@ -676,7 +678,7 @@ struct MANGOS_DLL_DECL npc_private_hendelAI : public ScriptedAI
         AttackStart(pAttacker);
     }
 
-    void DamageTaken(Unit* pDoneBy, uint32& uiDamage)
+    void DamageTaken(Unit* pDoneBy, uint32& uiDamage) override
     {
         if (uiDamage > m_creature->GetHealth() || m_creature->GetHealthPercent() < 20.0f)
         {
@@ -691,7 +693,7 @@ struct MANGOS_DLL_DECL npc_private_hendelAI : public ScriptedAI
     }
 };
 
-bool QuestAccept_npc_private_hendel(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
+bool QuestAccept_npc_private_hendel(Player* /*pPlayer*/, Creature* pCreature, const Quest* pQuest)
 {
     if (pQuest->GetQuestId() == QUEST_MISSING_DIPLO_PT16)
         pCreature->SetFactionTemporary(FACTION_HOSTILE, TEMPFACTION_RESTORE_COMBAT_STOP | TEMPFACTION_RESTORE_RESPAWN);
@@ -704,6 +706,102 @@ CreatureAI* GetAI_npc_private_hendel(Creature* pCreature)
     return new npc_private_hendelAI(pCreature);
 }
 
+/*#####
+## npc_stinky_ignatz
+## TODO Note: Possible some dynamic behaviour is missing. Faction change is guessed
+#####*/
+
+enum
+{
+    QUEST_ID_STINKYS_ESCAPE_ALLIANCE    = 1222,
+    QUEST_ID_STINKYS_ESCAPE_HORDE       = 1270,
+
+    SAY_STINKY_BEGIN                    = -1000958,
+    SAY_STINKY_FIRST_STOP               = -1000959,
+    SAY_STINKY_2_MONSTERS               = -1000960,
+    SAY_STINKY_GATHERING                = -1000961,
+    SAY_STINKY_END                      = -1000962,
+
+    GO_BOGBEAN_PLANT                    = 20939,
+};
+
+struct MANGOS_DLL_DECL npc_stinky_ignatzAI : public npc_escortAI
+{
+    npc_stinky_ignatzAI(Creature* pCreature) : npc_escortAI(pCreature)
+    {
+        Reset();
+    }
+
+    ObjectGuid m_bogbeanPlantGuid;
+
+    void Reset() {}
+
+    void ReceiveAIEvent(AIEventType eventType, Creature* /*pSender*/, Unit* pInvoker, uint32 uiMiscValue) override
+    {
+        if (eventType == AI_EVENT_START_ESCORT && pInvoker->GetTypeId() == TYPEID_PLAYER)
+        {
+            DoScriptText(SAY_STINKY_BEGIN, m_creature);
+            Start(false, (Player*)pInvoker, GetQuestTemplateStore(uiMiscValue));
+            m_creature->SetFactionTemporary(FACTION_ESCORT_N_NEUTRAL_PASSIVE, TEMPFACTION_RESTORE_RESPAWN);
+            m_creature->SetStandState(UNIT_STAND_STATE_STAND);
+        }
+    }
+
+    void WaypointReached(uint32 uiPointId) override
+    {
+        switch (uiPointId)
+        {
+            case 11:
+                DoScriptText(SAY_STINKY_FIRST_STOP, m_creature);
+                break;
+            case 17:
+                // TODO Note: This text would imply some waiting till two mobs are killed, such behaviour is neither confirmed nor implemented. Input welcome!
+                DoScriptText(SAY_STINKY_2_MONSTERS, m_creature);
+
+                if (GameObject* pBogbeanPlant = GetClosestGameObjectWithEntry(m_creature, GO_BOGBEAN_PLANT, DEFAULT_VISIBILITY_DISTANCE))
+                {
+                    m_bogbeanPlantGuid = pBogbeanPlant->GetObjectGuid();
+                    m_creature->SetFacingToObject(pBogbeanPlant);
+                }
+
+                break;
+            case 19:
+                DoScriptText(SAY_STINKY_GATHERING, m_creature);
+                break;
+            case 24:
+                if (Player* pPlayer = GetPlayerForEscort())
+                    pPlayer->GroupEventHappens(pPlayer->GetTeam() == ALLIANCE ? QUEST_ID_STINKYS_ESCAPE_ALLIANCE : QUEST_ID_STINKYS_ESCAPE_HORDE, m_creature);
+
+                DoScriptText(SAY_STINKY_END, m_creature);
+                break;
+        }
+    }
+
+    void WaypointStart(uint32 uiPointId)
+    {
+        if (uiPointId == 20)
+        {
+            if (GameObject* pBogbeanPlant = m_creature->GetMap()->GetGameObject(m_bogbeanPlantGuid))
+                pBogbeanPlant->Use(m_creature);
+            m_bogbeanPlantGuid.Clear();
+            m_creature->HandleEmote(EMOTE_ONESHOT_NONE);
+        }
+    }
+};
+
+CreatureAI* GetAI_npc_stinky_ignatz(Creature* pCreature)
+{
+    return new npc_stinky_ignatzAI(pCreature);
+}
+
+bool QuestAccept_npc_stinky_ignatz(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
+{
+    if (pQuest->GetQuestId() == QUEST_ID_STINKYS_ESCAPE_ALLIANCE || pQuest->GetQuestId() == QUEST_ID_STINKYS_ESCAPE_HORDE)
+        pCreature->AI()->SendAIEvent(AI_EVENT_START_ESCORT, pPlayer, pCreature, pQuest->GetQuestId());
+
+    return true;
+}
+
 /*######
 ## at_nats_landing
 ######*/
@@ -714,14 +812,14 @@ enum
     NPC_LURKING_SHARK  = 23928
 };
 
-bool AreaTrigger_at_nats_landing(Player* pPlayer, const AreaTriggerEntry* pAt)
+bool AreaTrigger_at_nats_landing(Player* pPlayer, const AreaTriggerEntry* /*pAt*/)
 {
     if (pPlayer->GetQuestStatus(QUEST_NATS_BARGAIN) == QUEST_STATUS_INCOMPLETE && pPlayer->HasAura(SPELL_FISH_PASTE))
     {
         Creature* pShark = GetClosestCreatureWithEntry(pPlayer, NPC_LURKING_SHARK, 20.0f);
 
         if (!pShark)
-            pShark = pPlayer->SummonCreature(NPC_LURKING_SHARK, -4246.243f, -3922.356f, -7.488f, 5.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 100000);
+            pShark = pPlayer->SummonCreature(NPC_LURKING_SHARK, -4246.243f, -3922.356f, -7.488f, 5.0f, TEMPSUMMON_TIMED_OOC_DESPAWN, 100000);
 
         pShark->AI()->AttackStart(pPlayer);
         return false;
@@ -764,7 +862,7 @@ struct MANGOS_DLL_DECL boss_lady_jaina_proudmooreAI : public ScriptedAI
         m_uiWaterElementTimer = 20000;
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
@@ -883,6 +981,12 @@ void AddSC_dustwallow_marsh()
     pNewScript->Name = "npc_private_hendel";
     pNewScript->GetAI = &GetAI_npc_private_hendel;
     pNewScript->pQuestAcceptNPC = &QuestAccept_npc_private_hendel;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_stinky_ignatz";
+    pNewScript->GetAI = &GetAI_npc_stinky_ignatz;
+    pNewScript->pQuestAcceptNPC = &QuestAccept_npc_stinky_ignatz;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;

@@ -19,6 +19,7 @@
 #ifndef SC_CONFIG_H
 #define SC_CONFIG_H
 
+#include "../../../config.h"
 #include "Platform/CompilerDefs.h"
 #include "revision.h"
 #include "sd2_revision_nr.h"
@@ -61,9 +62,6 @@
   #define SD2_FULLVERSION SD2_VERSION " (Unix)"
   #define _SCRIPTDEV2_CONFIG  SYSCONFDIR"scriptdev2.conf"
 #endif
-
-#define VERSION       "${MANGOS_VERSION}"
-#define CLIENT_VERSION ${CLIENT_VERSION}
 
 #if CLIENT_VERSION >= 16057
     #define MAX_EXPANSION 4

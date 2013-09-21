@@ -3,7 +3,7 @@
 --
 
 DELETE FROM sd2_db_version;
-INSERT INTO sd2_db_version (version) VALUES ('ScriptDev2 (for MangosR2 2812+ / for CMaNGOS 12514+) ');
+INSERT INTO sd2_db_version (version) VALUES ('ScriptDev2 (for MangosR2 2864+ / for CMaNGOS 12524+) ');
 
 --
 -- Below contains data for table `script_texts` mainly used in C++ parts.
@@ -979,7 +979,71 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 
 (-1000907,'%s sniffs at the air. A tuber is near!',0,2,0,0,'domesticated felboar EMOTE_SNIFF_AIR'),
 (-1000908,'%s starts to dig.',0,2,0,0,'domesticated felboar EMOTE_START_DIG'),
-(-1000909,'%s squeals with glee at its discovery.',0,2,0,0,'domesticated felboar EMOTE_SQUEAL');
+(-1000909,'%s squeals with glee at its discovery.',0,2,0,0,'domesticated felboar EMOTE_SQUEAL'),
+
+(-1000910,'Shall we begin, my friend?',0,0,0,0,'anchorite truuen SAY_BEGIN'),
+(-1000911,'This area is known to be full of foul Scourge. You may want to take a moment to prepare any defenses at your disposal.',0,0,0,0,'anchorite truuen SAY_FIRST_STOP'),
+(-1000912,'Very well, let us continue.',0,0,0,0,'anchorite truuen SAY_CONTINUE'),
+(-1000913,'Beware! We are attacked!',0,0,0,0,'anchorite truuen SAY_FIRST_ATTACK'),
+(-1000914,'It must be the purity of the Mark of the Lightbringer that is drawing forth the Scourge to us. We must proceed with caution lest we overwhelmed!',0,0,0,0,'anchorite truuen SAY_PURITY'),
+(-1000915,'We are beset upon again! Defend yourself!',0,0,0,0,'anchorite truuen SAY_SECOND_ATTACK'),
+(-1000916,'The land truly needs to be cleansed by the Light! Let us continue on the tomb. It isn\'t far now.',0,0,0,0,'anchorite truuen SAY_CLEANSE'),
+(-1000917,'Be welcome, friends!',0,0,0,0,'high priest thel\'danis SAY_WELCOME'),
+(-1000918,'Thank you for coming in remembrance of me. Your efforts in recovering that symbol, while unnecessary, are certainly touching to an old man\'s heart.',0,0,0,0,'ghost of uther SAY_EPILOGUE_1'),
+(-1000919,'Please, rise my friend. Keep the Blessing as a symbol of the strength of the Light and how heroes long gone might once again rise in each of us to inspire.',0,0,0,0,'ghost of uther SAY_EPILOGUE_2'),
+
+(-1000920,'%s turns to face you.',0,2,0,0,'lich_king_wyrmskull EMOTE_LICH_KING_FACE'),
+(-1000921,'Shamanism has brought you here... Its scent permeates the air. *The Lich King laughs* I was once a shaman.',14742,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_1'),
+(-1000922,'Shall we prepare it for you, my lord?',0,0,0,0,'valkyr_soulclaimer SAY_PREPARE'),
+(-1000923,'No, minion. This one is not ready.',14743,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_2'),
+(-1000924,'Do you feel it, mortal? Death seeps through me, enveloping all that I touch. With just a snap of my finger your soul will languish in damnation for all eternity.',14744,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_3'),
+(-1000925,'But... It is not yet your time to serve the Lich King. Yes, a greater destiny awaits you. Power... You must become more powerful before you are to serve me.',14745,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_4'),
+(-1000926,'Now watch, val\'kyr. Observe as I apply pressure. Can you see that it is not yet ripe? Watch as it pops and falls lifeless to the floor.',14746,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_5'),
+(-1000927,'Persistence or stupidity? It matters not. Let this be a lesson learned, mortal!',14747,0,0,0,'lich_king_wyrmskull SAY_LICH_KING_6'),
+
+(-1000928,'%s motions for silence.',0,3,0,25,'king_ymiron EMOTE_KING_SILENCE'),
+(-1000929,'Vrykul, your king implores you listen!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_1'),
+(-1000930,'The Gods have abandonned us!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_2'),
+(-1000931,'The crowd gasps in horror.',0,2,0,0,'king_ymiron EMOTE_YMIRON_CROWD_1'),
+(-1000932,'Even now, in our darkest hour, they mock us!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_3'),
+(-1000933,'Where are the titans in out time of greatest need? Our women birth abberations - disfigured runts unable to even stand on their own! Weak and ugly... Useless...',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_4'),
+(-1000934,'Ymiron has toiled. Long have I sat upon my throne and thought hard of our plight. There is only one answer... One reason...',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_5'),
+(-1000935,'For who but the titans themselves could bestow such a curse? What could have such power?',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_6'),
+(-1000936,'And the answer is nothing... For it is the titans who have cursed us!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_7'),
+(-1000937,'The crowd clamours.',0,2,0,0,'king_ymiron EMOTE_YMIRON_CROWD_2'),
+(-1000938,'On this day all Vrykul will shed their old beliefs! We denounce our old gods! All Vrykul will pledge their allegiance to Ymiron! Ymiron will protect our noble race!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_8'),
+(-1000939,'The crowd cheers.',0,2,0,0,'king_ymiron EMOTE_YMIRON_CROWD_3'),
+(-1000940,'And now my first decree upon the Vrykul! All malformed infants born of Vrykul mother and father are to be destroyed upon birth! Our blood must remain pure always! Those found in violation of Ymiron\'s decree will be taken to Gjalerbron for execution!',0,1,0,22,'king_ymiron SAY_KING_YMIRON_SPEECH_9'),
+(-1000941,'Vrykul must remain pure!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_1'),
+(-1000942,'Show the aberrations no mercy, Ymiron!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_2'),
+(-1000943,'Show them mercy, my king! They are of our flesh and blood!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_3'),
+(-1000944,'They weaken us! Our strength is dilluted by their very existence! Destroy them all!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_4'),
+(-1000945,'All hail our glorious king, Ymiron!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_5'),
+(-1000946,'The King is going to speak!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_6'),
+(-1000947,'Let him speak! Be silent!',0,0,0,0,'king_ymiron_crowd SAY_YMIRON_CROWD_7'),
+
+(-1000948,'Well then, let\'s get this started. The longer we\'re here, the more damage the undead could be doing back in Hilsbrad.',0,0,0,0,'kinelory SAY_START'),
+(-1000949,'All right, this is where we really have to be on our paws. Be ready!',0,0,0,0,'kinelory SAY_REACH_BOTTOM'),
+(-1000950,'Attack me if you will, but you won\'t stop me from getting back to Quae.',0,0,0,0,'kinelory SAY_AGGRO_KINELORY'),
+(-1000951,'You have my word that I shall find a use for your body after I\'ve killed you, Kinelory.',0,0,0,0,'jorell SAY_AGGRO_JORELL'),
+(-1000952,'Watch my rear! I\'ll see what I can find in all this junk...',0,0,0,0,'kinelory SAY_WATCH_BACK'),
+(-1000953,'%s begins rummaging through the apothecary\'s belongings.',0,2,0,0,'kinelory EMOTE_BELONGINGS'),
+(-1000954,'I bet Quae\'ll think this is important. She\'s pretty knowledgeable about these things--no expert, but knowledgable.',0,0,0,0,'kinelory SAY_DATA_FOUND'),
+(-1000955,'Okay, let\'s get out of here quick quick! Try and keep up. I\'m going to make a break for it.',0,0,0,0,'kinelory SAY_ESCAPE'),
+(-1000956,'We made it! Quae, we made it!',0,0,0,0,'kinelory SAY_FINISH'),
+(-1000957,'%s hands her pack to Quae.',0,2,0,0,'kinelory EMOTE_HAND_PACK'),
+
+(-1000958,'You must protect me from monsters, who are living in this forest!',0,0,0,0,'stinky ignatz SAY_STINKY_BEGIN'),
+(-1000959,'This part of forest are very danger for us. We must be a careful!',0,0,0,0,'stinky ignatz SAY_STINKY_FIRST_STOP'),
+(-1000960,'Kill two monsters, who stay near Bogbean plant and then I gather a bogbean.',0,0,0,0,'stinky ignatz SAY_STINKY_2_MONSTERS'),
+(-1000961,'I am gathering a bogbean. It takes some time.',0,0,0,69,'stinky ignatz SAY_STINKY_GATHERING'),
+(-1000962,'Thanks you for help.',0,0,0,0,'stinky ignatz SAY_STINKY_END');
+
+-- -1 004 000 GENERAL MAPS - CATACLYSM (not instance maps)
+INSERT INTO script_texts (entry,content_default,sound,type,language,emote,comment) VALUES
+(-1004000,'Yipe! Help Hogger!',0,1,0,0,'hogger SAY_CALL_HELP'),
+(-1004001,'Hogger is eating! Stop him!',0,5,0,0,'hogger WHISPER_EATING'),
+(-1004002,'No hurt Hogger!',0,1,0,0,'hogger SAY_HOGGER_BEATEN');
 
 -- -1 033 000 SHADOWFANG KEEP
 INSERT INTO script_texts (entry,content_default,sound,type,language,emote,comment) VALUES
@@ -1711,7 +1775,10 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1532127,'Miserable vermin. I shall exterminate you from the air!',0,1,0,0,'nightbane SAY_AIR_PHASE'),
 (-1532128,'Enough! I shall land and crush you myself!',0,1,0,0,'nightbane SAY_LAND_PHASE_1'),
 (-1532129,'Insects! Let me show you my strength up close!',0,1,0,0,'nightbane SAY_LAND_PHASE_2'),
-(-1532130,'%s takes a deep breath.',0,3,0,0,'nightbane EMOTE_DEEP_BREATH');
+(-1532130,'%s takes a deep breath.',0,3,0,0,'nightbane EMOTE_DEEP_BREATH'),
+
+(-1532131,'The halls of Karazhan shake, as the curse binding the doors of the Gamemaster\'s Hall is lifted.',0,2,0,0,'echo_of_medivh EMOTE_LIFT_CURSE'),
+(-1532132,'%s cheats!',0,3,0,0,'echo_of_medivh EMOTE_CHEAT');
 
 -- -1 533 000 NAXXRAMAS
 INSERT INTO script_texts (entry,content_default,sound,type,language,emote,comment) VALUES
@@ -3834,7 +3901,7 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1615005,'I will take pity on you Sartharion, just this once.',14117,1,0,0,'shadron SAY_SHADRON_RESPOND'),
 (-1615006,'Father tought me well!',14115,1,0,0,'shadron SAY_SHADRON_SPECIAL_1'),
 (-1615007,'On your knees!',14116,1,0,0,'shadron SAY_SHADRON_SPECIAL_2'),
-(-1615008,'A Shadron Disciple appears in the Twilight!',0,5,0,0,'shadron WHISPER_SHADRON_DICIPLE'),
+(-1615008,'A Shadron Disciple appears in the Twilight!',0,3,0,0,'shadron WHISPER_SHADRON_DICIPLE'),
 
 (-1615009,'You have no place here. Your place is among the departed.',14122,1,0,0,'tenebron SAY_TENEBRON_AGGRO'),
 (-1615010,'No contest.',14123,1,0,0,'tenebron SAY_TENEBRON_SLAY_1'),
@@ -3844,7 +3911,7 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1615014,'It is amusing to watch you struggle. Very well, witness how it is done.',14128,1,0,0,'tenebron SAY_TENEBRON_RESPOND'),
 (-1615015,'Arrogant little creatures! To challenge powers you do not yet understand...',14126,1,0,0,'tenebron SAY_TENEBRON_SPECIAL_1'),
 (-1615016,'I am no mere dragon! You will find I am much, much, more...',14127,1,0,0,'tenebron SAY_TENEBRON_SPECIAL_2'),
-(-1615017,'%s begins to hatch eggs in the twilight!',0,5,0,0,'tenebron WHISPER_HATCH_EGGS'),
+(-1615017,'%s begins to hatch eggs in the twilight!',0,3,0,0,'tenebron WHISPER_HATCH_EGGS'),
 
 (-1615018,'It is my charge to watch over these eggs. I will see you burn before any harm comes to them!',14093,1,0,0,'sartharion SAY_SARTHARION_AGGRO'),
 (-1615019,'This pathetic siege ends NOW!',14103,1,0,0,'sartharion SAY_SARTHARION_BERSERK'),
@@ -3860,7 +3927,7 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1615029,'You will make a fine meal for the hatchlings.',14094,1,0,0,'sartharion SAY_SARTHARION_SLAY_1'),
 (-1615030,'You are the grave disadvantage.',14096,1,0,0,'sartharion SAY_SARTHARION_SLAY_2'),
 (-1615031,'This is why we call you lesser beeings.',14097,1,0,0,'sartharion SAY_SARTHARION_SLAY_3'),
-(-1615032,'The lava surrounding %s churns!',0,5,0,0,'sartharion WHISPER_LAVA_CHURN'),
+(-1615032,'The lava surrounding %s churns!',0,3,0,0,'sartharion WHISPER_LAVA_CHURN'),
 
 (-1615033,'You pose no threat, lesser beings...give me your worst!',14133,1,0,0,'vesperon SAY_VESPERON_AGGRO'),
 (-1615034,'The least you could do is put up a fight...',14134,1,0,0,'vesperon SAY_VESPERON_SLAY_1'),
@@ -3870,9 +3937,9 @@ INSERT INTO script_texts (entry,content_default,sound,type,language,emote,commen
 (-1615038,'Father was right about you, Sartharion...You are a weakling!',14139,1,0,0,'vesperon SAY_VESPERON_RESPOND'),
 (-1615039,'Aren\'t you tricky...I have a few tricks of my own...',14137,1,0,0,'vesperon SAY_VESPERON_SPECIAL_1'),
 (-1615040,'Unlike, I have many talents.',14138,1,0,0,'vesperon SAY_VESPERON_SPECIAL_2'),
-(-1615041,'A Vesperon Disciple appears in the Twilight!',0,5,0,0,'shadron WHISPER_VESPERON_DICIPLE'),
+(-1615041,'A Vesperon Disciple appears in the Twilight!',0,3,0,0,'shadron WHISPER_VESPERON_DICIPLE'),
 
-(-1615042,'%s begins to open a Twilight Portal!',0,5,0,0,'sartharion drake WHISPER_OPEN_PORTAL');
+(-1615042,'%s begins to open a Twilight Portal!',0,3,0,0,'sartharion drake WHISPER_OPEN_PORTAL');
 
 -- -1 616 000 EYE OF ETERNITY
 INSERT INTO script_texts (entry,content_default,sound,type,LANGUAGE,emote,comment) VALUES
@@ -4519,7 +4586,21 @@ INSERT INTO gossip_texts (entry,content_default,comment) VALUES
 (-3532002,'Ok, I\'ll give it a try, then.','barnes GOSSIP_ITEM_OPERA_2'),
 (-3532003,'I\'ve never been more ready.','barnes GOSSIP_ITEM_OPERA_JULIANNE_WIPE'),
 (-3532004,'The wolf\'s going down.','barnes GOSSIP_ITEM_OPERA_WOLF_WIPE'),
-(-3532005,'What phat lewtz you have grandmother?','grandma GOSSIP_ITEM_GRANDMA');
+(-3532005,'What phat lewtz you have grandmother?','grandma GOSSIP_ITEM_GRANDMA'),
+
+(-3532006,'Control Orc Grunt','orc grunt GOSSIP_ITEM_ORC_GRUNT'),
+(-3532007,'Control Orc Wolf','orc wolf GOSSIP_ITEM_ORC_WOLF'),
+(-3532008,'Control Summoned Daemon','summoned deamon GOSSIP_ITEM_SUMMONED_DEAMON'),
+(-3532009,'Control Orc Warlock','orc warlock GOSSIP_ITEM_ORC_WARLOCK'),
+(-3532010,'Control Orc Necrolyte','orc necrolyte GOSSIP_ITEM_ORC_NECROLYTE'),
+(-3532011,'Control Warchief Blackhand','warchief blackhand GOSSIP_ITEM_WARCHIEF_BLACKHAND'),
+(-3532012,'Control Human Footman','human footman GOSSIP_ITEM_HUMAN_FOOTMAN'),
+(-3532013,'Control Human Charger','human charger GOSSIP_ITEM_HUMAN_CHARGER'),
+(-3532014,'Control Conjured Water Elemental','conjured water elemental GOSSIP_ITEM_WATER_ELEMENTAL'),
+(-3532015,'Control Human Conjurer','human conjurer GOSSIP_ITEM_HUMAN_CONJURER'),
+(-3532016,'Control Human Cleric','human cleric GOSSIP_ITEM_HUMAN_CLERIC'),
+(-3532017,'Control King Llane','king llane GOSSIP_ITEM_KING_LLANE'),
+(-3532018,'Please reset the chess board, we would like to play again.','medivh GOSSIP_ITEM_RESET_BOARD');
 
 -- -3 534 000 THE BATTLE OF MT. HYJAL
 INSERT INTO gossip_texts (entry,content_default,comment) VALUES
@@ -7229,5 +7310,116 @@ INSERT INTO script_waypoint VALUES
 (3584, 18, 4566.09, 303.127, 55.0396, 0, ''),
 (3584, 19, 4561.65, 295.456, 57.0984, 4000, 'SAY_THERYLUNE_FINISH'),
 (3584, 20, 4551.03, 293.333, 57.1534, 2000, '');
+
+DELETE FROM script_waypoint WHERE entry=17238;
+INSERT INTO script_waypoint VALUES
+(17238, 0, 954.21, -1433.72, 63.00, 0, ''),
+(17238, 1, 972.70, -1438.85, 65.56, 0, ''),
+(17238, 2, 984.79, -1444.15, 64.13, 0, ''),
+(17238, 3, 999.00, -1451.74, 61.20, 0, ''),
+(17238, 4, 1030.94, -1470.39, 63.49, 25000, 'SAY_FIRST_STOP'),
+(17238, 5, 1030.94, -1470.39, 63.49, 3000, 'SAY_CONTINUE'),
+(17238, 6, 1036.50, -1484.25, 64.60, 0, ''),
+(17238, 7, 1039.11, -1501.22, 65.32, 0, ''),
+(17238, 8, 1038.44, -1522.18, 64.55, 0, ''),
+(17238, 9, 1037.19, -1543.15, 62.33, 0, ''),
+(17238, 10, 1036.79, -1563.88, 61.93, 5000, 'SAY_FIRST_ATTACK'),
+(17238, 11, 1036.79, -1563.88, 61.93, 5000, 'SAY_PURITY'),
+(17238, 12, 1035.61, -1587.64, 61.66, 0, ''),
+(17238, 13, 1035.43, -1612.97, 61.54, 0, ''),
+(17238, 14, 1035.36, -1630.66, 61.53, 0, ''),
+(17238, 15, 1038.85, -1653.02, 60.35, 0, ''),
+(17238, 16, 1042.27, -1669.36, 60.75, 0, ''),
+(17238, 17, 1050.41, -1687.22, 60.52, 0, ''),
+(17238, 18, 1061.15, -1704.45, 60.59, 0, ''),
+(17238, 19, 1073.51, -1716.99, 60.65, 0, ''),
+(17238, 20, 1084.20, -1727.24, 60.95, 0, ''),
+(17238, 21, 1100.71, -1739.89, 60.64, 5000, 'SAY_SECOND_ATTACK'),
+(17238, 22, 1100.71, -1739.89, 60.64, 0, 'SAY_CLEANSE'),
+(17238, 23, 1117.03, -1749.01, 60.87, 0, ''),
+(17238, 24, 1123.58, -1762.29, 62.40, 0, ''),
+(17238, 25, 1123.36, -1769.29, 62.83, 0, ''),
+(17238, 26, 1115.78, -1779.59, 62.09, 0, ''),
+(17238, 27, 1109.56, -1789.78, 61.03, 0, ''),
+(17238, 28, 1094.81, -1797.62, 61.22, 0, ''),
+(17238, 29, 1079.30, -1801.58, 64.95, 0, ''),
+(17238, 30, 1060.24, -1803.40, 70.36, 0, ''),
+(17238, 31, 1047.69, -1804.49, 73.92, 0, ''),
+(17238, 32, 1032.59, -1805.99, 76.13, 0, ''),
+(17238, 33, 1013.60, -1812.36, 77.32, 0, ''),
+(17238, 34, 1007.01, -1814.38, 80.48, 0, ''),
+(17238, 35, 999.93, -1816.39, 80.48, 2000, 'SAY_WELCOME'),
+(17238, 36, 984.72, -1822.05, 80.48, 0, ''),
+(17238, 37, 977.77, -1824.80, 80.79, 0, ''),
+(17238, 38, 975.33, -1824.91, 81.24, 12000, 'event complete'),
+(17238, 39, 975.33, -1824.91, 81.24, 10000, 'SAY_EPILOGUE_1'),
+(17238, 40, 975.33, -1824.91, 81.24, 8000, 'SAY_EPILOGUE_2'),
+(17238, 41, 975.33, -1824.91, 81.24, 30000, '');
+
+DELETE FROM script_waypoint WHERE entry=2713;
+INSERT INTO script_waypoint VALUES
+(2713, 0, -1416.91, -3044.12, 36.21, 0, ''),
+(2713, 1, -1408.43, -3051.35, 37.79, 0, ''),
+(2713, 2, -1399.45, -3069.20, 31.25, 0, ''),
+(2713, 3, -1400.28, -3083.14, 27.06, 0, ''),
+(2713, 4, -1405.30, -3096.72, 26.36, 0, ''),
+(2713, 5, -1406.12, -3105.95, 24.82, 0, ''),
+(2713, 6, -1417.41, -3106.80, 16.61, 0, ''),
+(2713, 7, -1433.06, -3101.55, 12.56, 0, ''),
+(2713, 8, -1439.86, -3086.36, 12.29, 0, ''),
+(2713, 9, -1450.48, -3065.16, 12.58, 5000, 'SAY_REACH_BOTTOM'),
+(2713, 10, -1456.15, -3055.53, 12.54, 0, ''),
+(2713, 11, -1459.41, -3035.16, 12.11, 0, ''),
+(2713, 12, -1472.47, -3034.18, 12.44, 0, ''),
+(2713, 13, -1495.57, -3034.48, 12.55, 0, ''),
+(2713, 14, -1524.91, -3035.47, 13.15, 0, ''),
+(2713, 15, -1549.05, -3037.77, 12.98, 0, ''),
+(2713, 16, -1555.69, -3028.02, 13.64, 3000, 'SAY_WATCH_BACK'),
+(2713, 17, -1555.69, -3028.02, 13.64, 5000, 'SAY_DATA_FOUND'),
+(2713, 18, -1555.69, -3028.02, 13.64, 2000, 'SAY_ESCAPE'),
+(2713, 19, -1551.19, -3037.78, 12.96, 0, ''),
+(2713, 20, -1584.60, -3048.77, 13.67, 0, ''),
+(2713, 21, -1602.14, -3042.82, 15.12, 0, ''),
+(2713, 22, -1610.68, -3027.42, 17.22, 0, ''),
+(2713, 23, -1601.65, -3007.97, 24.65, 0, ''),
+(2713, 24, -1581.05, -2992.32, 30.85, 0, ''),
+(2713, 25, -1559.95, -2979.51, 34.30, 0, ''),
+(2713, 26, -1536.51, -2969.78, 32.64, 0, ''),
+(2713, 27, -1511.81, -2961.09, 29.12, 0, ''),
+(2713, 28, -1484.83, -2960.87, 32.54, 0, ''),
+(2713, 29, -1458.23, -2966.80, 40.52 , 0, ''),
+(2713, 30, -1440.20, -2971.20, 43.15, 0, ''),
+(2713, 31, -1427.85, -2989.15, 38.09, 0, ''),
+(2713, 32, -1420.27, -3008.91, 35.01, 0, ''),
+(2713, 33, -1427.58, -3032.53, 32.31, 5000, 'SAY_FINISH'),
+(2713, 34, -1427.40, -3035.17, 32.26, 0, '');
+
+DELETE FROM script_waypoint WHERE entry=4880;
+INSERT INTO script_waypoint VALUES
+(4880, 0,  -2674.53, -3440.48, 33.686,  0, ''),
+(4880, 1,  -2711.17, -3435.06, 33.1926, 0, ''),
+(4880, 2,  -2734.04, -3456.12, 33.2254, 0, ''),
+(4880, 3,  -2749.64, -3457.26, 32.8249, 0, ''),
+(4880, 4,  -2762.25, -3457.77, 30.6813, 0, ''),
+(4880, 5,  -2777.0,  -3456.12, 30.2484, 0, ''),
+(4880, 6,  -2805.49, -3450.27, 29.0624, 0, ''),
+(4880, 7,  -2809.77, -3447.14, 30.0948, 0, ''),
+(4880, 8,  -2824,    -3440.62, 33.405,  0, ''),
+(4880, 9,  -2840.2,  -3439.02, 34.1008, 0, ''),
+(4880, 10, -2878.49, -3482.81, 34.362,  0, ''),
+(4880, 11, -2878.35, -3511.51, 34.4826, 0, 'SAY_STINKY_FIRST_STOP'),
+(4880, 12, -2873.99, -3514.84, 34.5298, 0, ''),
+(4880, 13, -2866.71, -3519.06, 36.3674, 0, ''),
+(4880, 14, -2850.75, -3539.38, 36.4573, 0, ''),
+(4880, 15, -2844.49, -3557.7,  35.5588, 0, ''),
+(4880, 16, -2841.36, -3574.59, 35.5056, 0, ''),
+(4880, 17, -2841.13, -3596.95, 36.7699, 30000, 'SAY_STINKY_2_MONSTERS'),
+(4880, 18, -2828.83, -3597.3,  31.2891, 0, ''),
+(4880, 19, -2822.13, -3596.33, 31.2684, 5000, 'SAY_STINKY_GATHERING'),
+(4880, 20, -2829.08, -3597.82, 31.307,  0, ''),
+(4880, 21, -2859.28, -3602.33, 42.298,  0, ''),
+(4880, 22, -2881.64, -3601.28, 42.2111, 0, ''),
+(4880, 23, -2904.04, -3601.35, 34.969,  0, ''),
+(4880, 24, -2907.6,  -3612.73, 34.2434, 10000, 'SAY_STINKY_END');
 
 -- EOF

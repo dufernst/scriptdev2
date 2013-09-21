@@ -169,8 +169,8 @@ struct MANGOS_DLL_DECL npc_deathbringer_event_guards_iccAI : public ScriptedAI
     npc_deathbringer_event_guards_iccAI(Creature* pCreature) : ScriptedAI(pCreature){}
 
     void Reset(){}
-    void UpdateAI(const uint32 uiDiff){}
-    void AttackStart(Unit *pWho){}
+    void UpdateAI(const uint32 uiDiff) override{}
+    void AttackStart(Unit* pWho) override{}
 };
 
 // Event handler
@@ -193,12 +193,12 @@ struct MANGOS_DLL_DECL npc_highlord_saurfang_iccAI : public base_icc_bossAI
 
     void Reset(){}
 
-    void DamageTaken(Unit *pDealer, uint32 &uiDamage)
+    void DamageTaken(Unit *pDealer, uint32 &uiDamage) override
     {
         uiDamage = 0;
     }
 
-    void AttackStart(Unit *pWho){}
+    void AttackStart(Unit* pWho) override{}
 
     Creature* GetSaurfang()
     {
@@ -245,8 +245,7 @@ struct MANGOS_DLL_DECL npc_highlord_saurfang_iccAI : public base_icc_bossAI
         pSummoned->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
     }
 
-    void UpdateAI(const uint32 uiDiff)
-    {
+    void UpdateAI(const uint32 uiDiff) override    {
         if (!m_bIsEventStarted || !m_pInstance)
             return;
 
@@ -569,7 +568,7 @@ struct MANGOS_DLL_DECL boss_deathbringer_saurfangAI : public base_icc_bossAI
         m_iMarkOfFallenCount = 0;
     }
 
-    void MoveInLineOfSight(Unit *pWho)
+    void MoveInLineOfSight(Unit* pWho) override
     {
         if (!m_bIsIntroStarted && pWho->GetTypeId() == TYPEID_PLAYER && !((Player*)pWho)->isGameMaster() &&
             m_creature->GetDistance2d(pWho) < 50.0f)
@@ -609,7 +608,7 @@ struct MANGOS_DLL_DECL boss_deathbringer_saurfangAI : public base_icc_bossAI
         DoCastSpellIfCan(m_creature, SPELL_MARK_OF_FALLEN_CHAMPION, CAST_TRIGGERED);
     }
 
-    void EnterEvadeMode()
+    void EnterEvadeMode() override
     {
         m_creature->RemoveAllAuras();
         m_creature->DeleteThreatList();
@@ -647,7 +646,7 @@ struct MANGOS_DLL_DECL boss_deathbringer_saurfangAI : public base_icc_bossAI
         }
     }
 
-    void JustDied(Unit *pKiller)
+    void JustDied(Unit* pKiller) override
     {
         if (m_pInstance)
         {
@@ -668,13 +667,13 @@ struct MANGOS_DLL_DECL boss_deathbringer_saurfangAI : public base_icc_bossAI
         }
     }
 
-    void KilledUnit(Unit* pVictim)
+    void KilledUnit(Unit* pVictim) override
     {
         if (pVictim->GetTypeId() == TYPEID_PLAYER)
             DoScriptText(SAY_SLAY_1 - urand(0,1), m_creature, pVictim);
     }
 
-    void JustSummoned(Creature *pSummoned)
+    void JustSummoned(Creature* pSummoned) override
     {
         if (pSummoned->GetEntry() == NPC_BLOOD_BEAST)
         {
@@ -729,7 +728,7 @@ struct MANGOS_DLL_DECL boss_deathbringer_saurfangAI : public base_icc_bossAI
         return pResult;
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
@@ -883,12 +882,12 @@ struct MANGOS_DLL_DECL  mob_blood_beastAI : public ScriptedAI
         m_creature->SetWalk(true);
     }
 
-    void JustReachedHome()
+    void JustReachedHome() override
     {
         m_creature->ForcedDespawn();
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;

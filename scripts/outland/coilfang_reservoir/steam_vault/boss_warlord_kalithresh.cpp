@@ -39,7 +39,6 @@ enum
     SPELL_IMPALE                = 39061,
     SPELL_WARLORDS_RAGE         = 37081,        // triggers 36453
     SPELL_WARLORDS_RAGE_NAGA    = 31543,        // triggers 37076
-    SPELL_WARLORDS_RAGE_AURA    = 36453,
 };
 
 struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
@@ -62,7 +61,7 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
 
     bool m_bHasTaunted;
 
-    void Reset()
+    void Reset() override
     {
         m_uiReflectionTimer = 15000;
         m_uiImpaleTimer     = urand(7000, 14000);
@@ -70,13 +69,13 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
         m_uiRageCastTimer   = 0;
     }
 
-    void JustReachedHome()
+    void JustReachedHome() override
     {
         if (m_pInstance)
             m_pInstance->SetData(TYPE_WARLORD_KALITHRESH, FAIL);
     }
 
-    void Aggro(Unit* pWho)
+    void Aggro(Unit* /*pWho*/) override
     {
         switch (urand(0, 2))
         {
@@ -89,12 +88,12 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
             m_pInstance->SetData(TYPE_WARLORD_KALITHRESH, IN_PROGRESS);
     }
 
-    void KilledUnit(Unit* pVictim)
+    void KilledUnit(Unit* /*pVictim*/) override
     {
         DoScriptText(urand(0, 1) ? SAY_SLAY1 : SAY_SLAY2, m_creature);
     }
 
-    void JustDied(Unit* pKiller)
+    void JustDied(Unit* /*pKiller*/) override
     {
         DoScriptText(SAY_DEATH, m_creature);
 
@@ -102,7 +101,7 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
             m_pInstance->SetData(TYPE_WARLORD_KALITHRESH, DONE);
     }
 
-    void MoveInLineOfSight(Unit* pWho)
+    void MoveInLineOfSight(Unit* pWho) override
     {
         if (!m_bHasTaunted && m_creature->IsWithinDistInMap(pWho, 40.0f))
         {
@@ -113,7 +112,7 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
         ScriptedAI::MoveInLineOfSight(pWho);
     }
 
-    void MovementInform(uint32 uiMoveType, uint32 uiPointId)
+    void MovementInform(uint32 uiMoveType, uint32 uiPointId) override
     {
         if (uiMoveType != POINT_MOTION_TYPE || !uiPointId)
             return;
@@ -122,7 +121,7 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
         m_uiRageCastTimer = 1000;
     }
 
-    void UpdateAI(const uint32 uiDiff)
+    void UpdateAI(const uint32 uiDiff) override
     {
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
@@ -150,31 +149,21 @@ struct MANGOS_DLL_DECL boss_warlord_kalithreshAI : public ScriptedAI
         }
 
         // Move to closest distiller
-        if (m_uiRageTimer)
+        if (m_uiRageTimer < uiDiff)
         {
-            if (m_uiRageTimer <= uiDiff)
+            if (Creature* pDistiller = GetClosestCreatureWithEntry(m_creature, NPC_NAGA_DISTILLER, 100.0f))
             {
-                // If the boss already has the rage aura we don't have to do this again
-                if (m_creature->HasAura(SPELL_WARLORDS_RAGE_AURA))
-                {
-                    m_uiRageTimer = 0;
-                    return;
-                }
-
-                if (Creature* pDistiller = GetClosestCreatureWithEntry(m_creature, NPC_NAGA_DISTILLER, 100.0f))
-                {
-                    float fX, fY, fZ;
-                    pDistiller->GetContactPoint(m_creature, fX, fY, fZ, INTERACTION_DISTANCE);
-                    m_creature->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
-                    SetCombatMovement(false);
-                    m_distillerGuid = pDistiller->GetObjectGuid();
-                }
-
-                m_uiRageTimer = urand(35000, 45000);
+                float fX, fY, fZ;
+                pDistiller->GetContactPoint(m_creature, fX, fY, fZ, INTERACTION_DISTANCE);
+                m_creature->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
+                SetCombatMovement(false);
+                m_distillerGuid = pDistiller->GetObjectGuid();
             }
-            else
-                m_uiRageTimer -= uiDiff;
+
+            m_uiRageTimer = urand(35000, 45000);
         }
+        else
+            m_uiRageTimer -= uiDiff;
 
         // Reflection_Timer
         if (m_uiReflectionTimer < uiDiff)
@@ -226,14 +215,14 @@ struct MANGOS_DLL_DECL mob_naga_distillerAI : public Scripted_NoMovementAI
 {
     mob_naga_distillerAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature) { Reset(); }
 
-    void Reset()
+    void Reset() override
     {
         m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
     }
 
-    void MoveInLineOfSight(Unit* pWho) { }
-    void AttackStart(Unit* pWho) { }
-    void UpdateAI(const uint32 uiDiff) { }
+    void MoveInLineOfSight(Unit* /*pWho*/) override { }
+    void AttackStart(Unit* /*pWho*/) override { }
+    void UpdateAI(const uint32 /*uiDiff*/) override { }
 };
 
 CreatureAI* GetAI_boss_warlord_kalithresh(Creature* pCreature)
