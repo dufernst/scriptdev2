@@ -146,7 +146,6 @@ UPDATE creature_template SET ScriptName='npc_doctor' WHERE entry IN (12939,12920
 UPDATE creature_template SET ScriptName='npc_injured_patient' WHERE entry IN (12936,12937,12938,12923,12924,12925);
 UPDATE creature_template SET ScriptName='npc_prof_blacksmith' WHERE entry IN (5164,11145,11146,11176,11177,11178,11191,11192,11193);
 UPDATE creature_template SET ScriptName='npc_prof_leather' WHERE entry IN (7866,7867,7868,7869,7870,7871);
-UPDATE creature_template SET ScriptName='npc_prof_tailor' WHERE entry IN (22208,22212,22213);
 -- disabled, but can be used for custom
 -- UPDATE creature_template SET ScriptName='' WHERE npcflag!=npcflag|65536 AND ScriptName='npc_innkeeper';
 -- UPDATE creature_template SET ScriptName='npc_innkeeper' WHERE npcflag=npcflag|65536;
@@ -689,6 +688,17 @@ UPDATE instance_template SET ScriptName='instance_forge_of_souls' WHERE map=632;
 /* PIT OF SARON */
 UPDATE instance_template SET ScriptName='instance_pit_of_saron' WHERE map=658;
 UPDATE creature_template SET ScriptName='boss_forgemaster_garfrost' WHERE entry=36494;
+UPDATE creature_template SET ScriptName='boss_krick' WHERE entry=36477;
+UPDATE creature_template SET ScriptName='boss_ick' WHERE entry=36476;
+UPDATE creature_template SET ScriptName='npc_exploding_orb' WHERE entry=36610;
+UPDATE creature_template SET ScriptName='npc_ymirjar_deathbringer' WHERE entry=36892;
+UPDATE creature_template SET ScriptName='npc_collapsing_icicle' WHERE entry=36847;
+UPDATE creature_template SET ScriptName='boss_tyrannus' WHERE entry=36658;
+UPDATE creature_template SET ScriptName='boss_rimefang_pos' WHERE entry=36661;
+DELETE FROM scripted_areatrigger WHERE entry IN (5578,5581);
+INSERT INTO scripted_areatrigger VALUES
+(5578,'at_pit_of_saron'),
+(5581,'at_pit_of_saron');
 
 /* ICECROWN */
 
@@ -1159,6 +1169,7 @@ UPDATE gameobject_template SET ScriptName='go_mana_bomb' WHERE entry=184725;
 UPDATE creature_template SET ScriptName='npc_captive_child' WHERE entry=22314;
 UPDATE creature_template SET ScriptName='npc_isla_starmane' WHERE entry=18760;
 UPDATE creature_template SET ScriptName="npc_skywing" WHERE entry=22424;
+UPDATE creature_template SET ScriptName="npc_cenarion_sparrowhawk" WHERE entry=22972;
 
 /* THOUSAND NEEDLES */
 UPDATE creature_template SET ScriptName='npc_kanati' WHERE entry=10638;

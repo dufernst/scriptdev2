@@ -2,34 +2,40 @@
  * This program is free software licensed under GPL version 2
  * Please see the included DOCS/LICENSE.TXT for more information */
 
-#ifndef DEF_ICECROWN_SPIRE_H
-#define DEF_ICECROWN_SPIRE_H
+#ifndef DEF_ICECROWN_CITADEL_H
+#define DEF_ICECROWN_CITADEL_H
 #include "BSW_instance.h"
 #include "BSW_ai.h"
 
 enum
 {
     TYPE_TELEPORT               = 0,
-    TYPE_MARROWGAR              = 1,
-    TYPE_DEATHWHISPER           = 2,
-    TYPE_FLIGHT_WAR             = 3,
-    TYPE_SAURFANG               = 4,
-    TYPE_FESTERGUT              = 5,
-    TYPE_ROTFACE                = 6,
-    TYPE_PUTRICIDE              = 7,
-    TYPE_BLOOD_COUNCIL          = 8,
-    TYPE_LANATHEL               = 9,
-    TYPE_VALITHRIA              = 10,
-    TYPE_SINDRAGOSA             = 11,
+    TYPE_ICC_INTRO              = 1,
+    TYPE_MARROWGAR              = 2,
+    TYPE_LADY_DEATHWHISPER      = 3,
+    TYPE_FLIGHT_WAR             = 4,
+    TYPE_DEATHBRINGER_SAURFANG  = 5,
+    TYPE_FESTERGUT              = 6,
+    TYPE_ROTFACE                = 7,
+    TYPE_PROFESSOR_PUTRICIDE    = 8,
+    TYPE_BLOOD_PRINCE_COUNCIL   = 9,
+    TYPE_QUEEN_LANATHEL         = 10,
+    TYPE_VALITHRIA              = 11,
+    TYPE_SINDRAGOSA             = 12,
     TYPE_LICH_KING              = 13,
+    TYPE_FROSTMOURNE_ROOM       = 14,
+    TYPE_KINGS_OF_ICC           = 15,
+    TYPE_ICECROWN_QUESTS        = 16,
+    TYPE_STINKY                 = 17,
+    TYPE_PRECIOUS               = 18,
     MAX_ENCOUNTERS,
 
-    TYPE_FROSTMOURNE_ROOM,
-    TYPE_KINGS_OF_ICC,
-    TYPE_ICECROWN_QUESTS,
-    TYPE_STINKY,
-    TYPE_PRECIOUS,
-    MAX_ENCOUNTERS_2,
+    NPC_DAMNED                       = 37011,
+    NPC_HIGHLORD_TIRION_FORDRING_LH  = 37119,
+    NPC_THE_LICH_KING_LH             = 37181,
+    NPC_HIGHLORD_BOLVAR_FORDRAGON_LH = 37183,
+    NPC_SAURFANG_LH                  = 37187,
+    NPC_MURADIN_LH                   = 37200,
 
     NPC_LORD_MARROWGAR          = 36612,
     NPC_LADY_DEATHWHISPER       = 36855,
@@ -40,13 +46,13 @@ enum
     NPC_TALDARAM                = 37973,
     NPC_VALANAR                 = 37970,
     NPC_KELESETH                = 37972,
-    NPC_LANATHEL                = 37955,
+    NPC_QUEEN_LANATHEL          = 37955,
     NPC_VALITHRIA               = 36789,
     NPC_VALITHRIA_QUEST         = 38589,
     NPC_SINDRAGOSA              = 36853,
     NPC_LICH_KING               = 36597,
 
-    NPC_LANATHEL_INTRO          = 38004,
+    NPC_QUEEN_LANATHEL_INTRO    = 38004,
     NPC_BLOOD_ORB_CONTROL       = 38008,
 
     NPC_MURADIN                 = 36948,
@@ -67,6 +73,8 @@ enum
 
     GO_TELEPORT_GOSSIP_MESSAGE  = 99323,
     TELEPORT_GOSSIP_MESSAGE     = 99322,
+
+    GO_INSTANCE_PORTAL          = 202347,
 
     GO_ICEWALL_1                = 201911,
     GO_ICEWALL_2                = 201910,
@@ -277,23 +285,22 @@ public:
 
 private:
 
-    uint8 Difficulty;
-    bool needSave;
+    Difficulty m_uiMapDifficulty;
     std::string strSaveData;
 
     //Creatures GUID
-    uint32 m_auiEncounter[MAX_ENCOUNTERS_2];
+    uint32 m_auiEncounter[MAX_ENCOUNTERS];
 
     bool m_bAchievCriteria[ACHIEVE_MAX_COUNT];
 
-    uint32 m_uiCouncilInvocation;
+    // uint32 m_uiCouncilInvocation;
 
-    uint32 m_auiEvent;
-    uint32 m_auiEventTimer;
-    uint32 m_uiDirection;
+    // uint32 m_auiEvent;
+    // uint32 m_auiEventTimer;
+    // uint32 m_uiDirection;
 
-    uint32 m_uiStinkystate;
-    uint32 m_uiPreciousstate;
+    // uint32 m_uiStinkystate;
+    // uint32 m_uiPreciousstate;
     uint32 m_uiGunshipArmoryA_ID;
     uint32 m_uiGunshipArmoryH_ID;
     uint32 m_uiValithriaCache;
@@ -305,14 +312,13 @@ struct MANGOS_DLL_DECL base_icc_bossAI : public ScriptedAI
     base_icc_bossAI(Creature* pCreature) : ScriptedAI(pCreature)
     {
         m_pInstance = (ScriptedInstance*)pCreature->GetInstanceData();
-        m_uiMapDifficulty = pCreature->GetMap()->GetDifficulty();
-        m_bIsHeroic = m_uiMapDifficulty > RAID_DIFFICULTY_25MAN_NORMAL;
-        m_bIs25Man = (m_uiMapDifficulty == RAID_DIFFICULTY_25MAN_NORMAL || m_uiMapDifficulty == RAID_DIFFICULTY_25MAN_HEROIC);
+        Difficulty uiMapDifficulty = pCreature->GetMap()->GetDifficulty();
+        m_bIsHeroic = uiMapDifficulty > RAID_DIFFICULTY_25MAN_NORMAL;
+        m_bIs25Man = (uiMapDifficulty == RAID_DIFFICULTY_25MAN_NORMAL || uiMapDifficulty == RAID_DIFFICULTY_25MAN_HEROIC);
         Reset();
     }
 
     ScriptedInstance* m_pInstance;
-    Difficulty m_uiMapDifficulty;
     bool m_bIsHeroic;
     bool m_bIs25Man;
 
